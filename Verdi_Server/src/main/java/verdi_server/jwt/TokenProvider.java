@@ -1,25 +1,27 @@
 package verdi_server.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.csrf.InvalidCsrfTokenException;
 import org.springframework.stereotype.Component;
+import verdi_server.exception.TokenException;
 import verdi_server.member.dto.TokenDTO;
 import verdi_server.member.entity.Member;
 import verdi_server.member.entity.MemberRole;
 
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider {
@@ -83,10 +85,47 @@ public class TokenProvider {
 
         Claims claims = parseClaims(token);
 
+        if(claims.get(AUTHORITIES_KEY) == null) {
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
 
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                                .map(role -> new SimpleGrantedAuthority(role))
+                                        .collect(Collectors.toList());
+
+        log.info("[TokenProvider] authorized authorities {} ",  authorities);
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(token));
 
         log.info("[TokenProvider] getAuthentication() End");
 
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+    }
+
+    public boolean validateToken(String token) {
+        try {
+
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("[TokenProvider] 잘못된 JWT 서명입니다.");
+            throw new TokenException("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            log.info("[TokenProvider] 만료된 JWT 토큰입니다.");
+            throw new TokenException("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("[TokenProvider] 지원되지 않는 JWT 토큰입니다.");
+            throw new TokenException("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.info("[TokenProvider] JWT 토큰이 잘못되었습니다.");
+            throw new TokenException("JWT 토큰이 잘못되었습니다.");
+        }
     }
 
     private Claims parseClaims(String token) {
