@@ -1,21 +1,40 @@
 import React from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoginCSS from "./Login.module.css"; // CSS 파일 import
+import { callLoginAPI } from "../../apis/MemberAPICalls";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleLogin = () => {
-    console.log("Logged in!");
-    navigate("/main");
+  const [form, setForm] = useState({});
+
+  const onClickLoginHandler = () => {
+    console.log("[Login] onClickLoginHandler Called");
+
+    dispatch(callLoginAPI({
+      form: form
+    }));
+    
+    // navigate("/main");
   };
 
   const onClickSignupHandler = () => {
-    navigate("/signup");
+    navigate("/register", { replace: true });
   };
 
   const onClickFindEmailHandler = () => {
     navigate("/find-email");
+  };
+
+  const onChangeHandler = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+    // console.log(e.target.name + " : " + e.target.value);
   };
 
   return (
@@ -25,17 +44,22 @@ function Login() {
       <input
         type="text"
         placeholder="Email"
+        autoComplete="off"
+        name="Email"
         className={LoginCSS.logininput}
+        onChange={onChangeHandler}
       />
 
       <input
         type="password"
         placeholder="Password"
+        autoComplete="off"
+        name="password"
         className={LoginCSS.logininput}
-
+        onChange={onChangeHandler}
       />
 
-      <button onClick={handleLogin} className={LoginCSS.loginbutton}>
+      <button onClick={onClickLoginHandler} className={LoginCSS.loginbutton}>
         로그인
       </button>
 

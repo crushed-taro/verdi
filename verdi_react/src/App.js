@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './layouts/Layout';
 import Main from './pages/Main';
-import Login from './pages/member/Login'
+import Login from './pages/member/Login';
+import Register from './pages/member/Register';
+import Error from './pages/Error';
 
 function App() {
   return (
@@ -12,9 +14,9 @@ function App() {
         <Route path="/main" element={ <Layout/> }>
           <Route index element={ <Main/> }/>
         </Route>
-        {/* <Route path="/login" element={ <Login/> } />
+
         <Route path="/register" element={ <Register/> } />
-        <Route path="*" element={ <Error/> } /> */}
+        <Route path="*" element={ <Error/> } />
       </Routes>
     </BrowserRouter>
 
