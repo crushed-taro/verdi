@@ -25,6 +25,11 @@ public class MemberRole {
         this.authority = authority;
     }
 
+    public MemberRole(int memberCode, int authorityCode) {
+        this.memberCode = memberCode;
+        this.authorityCode = authorityCode;
+    }
+
     public MemberRole() {
     }
 

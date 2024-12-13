@@ -87,9 +87,16 @@ public class MemberDTO implements UserDetails {
         this.memberRole = memberRole;
     }
 
+    // 해당 사용자에게 부여된 권한의 집합을 저장함.
+    private Collection<GrantedAuthority> authorities;
+
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return this.authorities;
     }
 
     @Override
