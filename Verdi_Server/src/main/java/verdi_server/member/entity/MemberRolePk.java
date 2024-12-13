@@ -4,23 +4,23 @@ import java.io.Serializable;
 
 public class MemberRolePk implements Serializable {
 
-    private int memberNo;
+    private int memberCode;
     private int authorityCode;
 
     public MemberRolePk() {
     }
 
-    public MemberRolePk(int memberNo, int authorityCode) {
-        this.memberNo = memberNo;
+    public MemberRolePk(int memberCode, int authorityCode) {
+        this.memberCode = memberCode;
         this.authorityCode = authorityCode;
     }
 
-    public int getMemberNo() {
-        return memberNo;
+    public int getMemberCode() {
+        return memberCode;
     }
 
-    public void setMemberNo(int memberNo) {
-        this.memberNo = memberNo;
+    public void setMemberCode(int memberCode) {
+        this.memberCode = memberCode;
     }
 
     public int getAuthorityCode() {
@@ -34,7 +34,7 @@ public class MemberRolePk implements Serializable {
     @Override
     public String toString() {
         return "MemberRolePk{" +
-                "memberNo=" + memberNo +
+                "memberCode=" + memberCode +
                 ", authorityCode=" + authorityCode +
                 '}';
     }

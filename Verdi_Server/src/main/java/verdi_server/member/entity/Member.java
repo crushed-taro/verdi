@@ -1,6 +1,7 @@
 package verdi_server.member.entity;
 
 import jakarta.persistence.*;
+import org.springframework.core.ReactiveAdapterRegistry;
 
 import java.util.List;
 
@@ -12,6 +13,12 @@ public class Member {
     @Column(name = "member_code")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int memberCode;
+
+    @Column(name = "member_id")
+    private String memberId;
+
+    @Column(name = "authority_code")
+    private String authorityCode;
 
     @Column(name = "email")
     private String email;
@@ -41,8 +48,10 @@ public class Member {
     @JoinColumn(name = "member_code")
     private List<MemberRole> memberRole;
 
-    public Member(int memberCode, String email, String password, String name, String nickname, int mobileNumber, String birth, String profilePhoto, String getder, List<MemberRole> memberRole) {
+    public Member(int memberCode, String memberId, String authorityCode, String email, String password, String name, String nickname, int mobileNumber, String birth, String profilePhoto, String getder, List<MemberRole> memberRole) {
         this.memberCode = memberCode;
+        this.memberId = memberId;
+        this.authorityCode = authorityCode;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -56,6 +65,22 @@ public class Member {
 
     public Member() {
 
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getAuthorityCode() {
+        return authorityCode;
+    }
+
+    public void setAuthorityCode(String authorityCode) {
+        this.authorityCode = authorityCode;
     }
 
     public List<MemberRole> getMemberRole() {
@@ -142,6 +167,8 @@ public class Member {
     public String toString() {
         return "Member{" +
                 "memberCode=" + memberCode +
+                ", memberId='" + memberId + '\'' +
+                ", authorityCode='" + authorityCode + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
