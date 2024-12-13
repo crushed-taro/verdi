@@ -1,0 +1,67 @@
+/* Login 컴포넌트 스타일 */
+.logincontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f8f8;
+  }
+  
+  .logintitle {
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .logininput {
+    width: 80%;
+    max-width: 300px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  .loginbutton {
+    width: 80%;
+    max-width: 300px;
+    padding: 10px;
+    background-color: #d3d3d3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .loginbutton:hover {
+    background-color: #c0c0c0;
+  }
+  
+  .loginlinks {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .loginlink {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #007bff;
+  }
+  
+  .loginlink:hover {
+    color: #0056b3;
+  }
+  
+  .loginseparator {
+    color: #555;
+  }
